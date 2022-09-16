@@ -1,0 +1,28 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - flask
+    networks:
+      - app-network
+
+  flask:
+    build: ./app
+    image: dongtrieu/flask:0.01
+    container_name: flask
+    volumes:
+      - ./app:/app
+    ports:
+      - "5000:5000"
+    networks:
+      app-network:
+        aliases:
+          - flask-app
+
+networks:
+  app-network:
